@@ -6,55 +6,53 @@
 import UIKit
 
 class ViewController: UIViewController {
-    let formatter = DateFormatter()
-    var counter: Int = 0
+    private let formatter = DateFormatter()
+    private var counter: Int = 0
     
-    @IBOutlet weak var textLabel: UILabel!
+    @IBOutlet weak private var counterLabel: UILabel!
+    @IBOutlet weak private var addButton: UIButton!
+    @IBOutlet weak private var subtractButton: UIButton!
+    @IBOutlet weak private var clearButton: UIButton!
+    @IBOutlet weak private var logTextBox: UITextView!
     
-    @IBOutlet weak var addButton: UIButton!
-    @IBOutlet weak var substractButton: UIButton!
-    @IBOutlet weak var clearButton: UIButton!
-    @IBOutlet weak var textBox: UITextView!
-
     override func viewDidLoad() {
         super.viewDidLoad()
         formatter.timeStyle = .medium
         formatter.dateStyle = .medium
-
+        
         addButton.tintColor = .red
-        substractButton.tintColor = .blue
+        subtractButton.tintColor = .blue
         clearButton.tintColor = .gray
-        
-        
     }
-    func scrollTextToBottom(_ box: UITextView) {
+
+    private func scrollTextToBottom(_ box: UITextView) {
         let bottom = NSMakeRange(box.text.count - 1, 1)
         box.scrollRangeToVisible(bottom)
     }
     
-    @IBAction func add(_ sender: Any) {
-        textBox.text.append("\n[\(formatter.string(from: Date()))]: значение изменено на +1")
+    @IBAction private func add(_ sender: Any) {
+        logTextBox.text.append("\n[\(formatter.string(from: Date()))]: значение изменено на +1")
         counter += 1
-        textLabel.text = "Значение счётчика: \(self.counter)"
-        scrollTextToBottom(textBox)
-    }
-
-    @IBAction func substract(_ sender: Any) {
-        if counter > 0 {
-            counter -= 1
-            textBox.text.append("\n[\(formatter.string(from: Date()))]: значение изменено на -1")
-            textLabel.text = "Значение счётчика: \(self.counter)"
-        } else {
-            textBox.text.append("\n[\(formatter.string(from: Date()))]: попытка уменьшить значение счётчика ниже 0")
-        }
-        scrollTextToBottom(textBox)
+        counterLabel.text = "Значение счётчика: \(self.counter)"
+        scrollTextToBottom(logTextBox)
     }
     
-    @IBAction func clear(_ sender: Any) {
-        textBox.text.append("\n[\(formatter.string(from: Date()))]: значение сброшено")
+    @IBAction private func subtract(_ sender: Any) {
+        if counter > 0 {
+            counter -= 1
+            logTextBox.text.append("\n[\(formatter.string(from: Date()))]: значение изменено на -1")
+            counterLabel.text = "Значение счётчика: \(self.counter)"
+        } else {
+            logTextBox.text.append("\n[\(formatter.string(from: Date()))]: попытка уменьшить значение счётчика ниже 0")
+        }
+        scrollTextToBottom(logTextBox)
+    }
+    
+    @IBAction private func clear(_ sender: Any) {
+        logTextBox.text.append("\n[\(formatter.string(from: Date()))]: значение сброшено")
         counter = 0
-        textLabel.text = "Значение счётчика: \(self.counter)"
-        scrollTextToBottom(textBox)
+        counterLabel.text = "Значение счётчика: \(self.counter)"
+        scrollTextToBottom(logTextBox)
     }
 }
 
